@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<title>Movie Details</title>
+	<link type="text/css" rel="stylesheet" th:href="@{/css/rating.css}" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script src="https://www.w3schools.com/lib/w3.js"></script>
+</head>
+<body>
+	<!-- Sets up a navbar. Some features visible only to admin -->
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand">MovieDB</a>
+			</div>
+		<ul class="nav navbar-nav">
+			<li><a href="/homepage">Home</a></li>
+			<li><a href="/filter">Filter by genre</a></li>
+			<li><a href="/add" sec:authorize="hasAuthority('ADMIN')">Add movie</a></li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+      			<li>
+      				<a href="#"><span class="glyphicon glyphicon-user"></span>		[[${#httpServletRequest.remoteUser}]]</a>
+      			</li>
+      			<li><form th:action="@{/logout}" method="post" class="nav navbar-nav navbar-right" style="margin-top: 0.5em; margin-right: 0.5em">
+						<input type="submit" value="Log out" class="btn btn-danger"/>
+					</form>
+				</li>
+    		</ul>
+		</div>
+	</nav>
+	
+	<!-- Shows a poster, some admin functionalities, and reviews about the movies -->
+	<div class="details">
+		<h1 th:text="${movie.title}"></h1>
+			<table>
+				<tr>
+					<td><a sec:authorize="hasAuthority('ADMIN')" class="btn btn-warning" th:href="@{/edit/{id}(id=${movie.id})}">Edit Movie</a></td>
+					<td ><a sec:authorize="hasAuthority('ADMIN')" class="btn btn-danger" th:href="@{/delete/{id}(id=${movie.id})}">Delete Movie</a></td>
+				</tr>
+				<tr>
+					<th align="center">Ratings</th>
+					<th align="center">Average</th>
+				</tr>
+				
+				<!-- Shows the average of reviews -->
+				<tr>
+					<td align="center" th:text="${reviews.size()}"></td>
+					<td align="center" th:inline="text"> [[${average}]] / 5</td>
+				</tr>
+			</table>
+		
+			<img th:src="${movie.poster}" height="300px"/>
+		
+			<!-- The star radio rating system and a review text input -->
+			<h1 sec:authorize="hasAuthority('USER')">Add a rating</h1>
+				
+				<form sec:authorize="hasAuthority('USER')" th:object="${review}" th:action="@{/savereview/{id}(id=${movie.id})}" method="post">
+				<div style="display: block;">
+				<fieldset class="rating">
+				
+				    <input type="radio" id="star5" name="rating" value="5" />
+				    <label for="star5"></label>
+				    
+				    <input type="radio" id="star4" name="rating" value="4" />
+				    <label for="star4"></label>
+				    
+				    <input type="radio" id="star3" name="rating" value="3" />
+				    <label for="star3"></label>
+				    
+				    <input type="radio" id="star2" name="rating" value="2" />
+				    <label for="star2"></label>
+				    
+					<input type="radio" id="star1" name="rating" value="1" />
+					<label for="star1"></label>
+					
+				</fieldset>
+				</div>
+				<div>
+					<textarea style="display:block;" th:field="*{reviewtext}" maxlength="250" placeholder="Type your review..."></textarea>	
+					<input type="submit" value="Add">
+				</div>							
+			</form>
+		<div>
+		<!-- Table that lists ratings and review comments, plus admin delete for review management -->
+			<table id="reviewTable" class="table table-striped" style="width: 600px">
+				<tr>
+					<th style="width: 10%" sec:authorize="hasAuthority('ADMIN')">Review id</th> 
+					<th style="width: 10%">Rating</th> 
+					<th>Review</th> 
+					<th style="width: 10%" sec:authorize="hasAuthority('ADMIN')"></th> 
+				</tr>
+					<tr class="item" th:each="review: ${reviews}">
+						<td th:text="${review.reviewId}" sec:authorize="hasAuthority('ADMIN')"></td>
+						<td th:text="${review.rating}"></td>
+						<td th:text="${review.reviewtext}" style="word-break: break-all;"></td>
+						<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/deletereview/{reviewid}/{id}(reviewid=${review.reviewId},id=${movie.id})}">Delete</a></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+</body>
+</html>

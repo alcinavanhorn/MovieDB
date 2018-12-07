@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+        <title>MovieDB - Login</title>
+        <link type="text/css" rel="stylesheet" th:href="@{css/bootstrap.min.css}" />
+</head>
+<body>
+	<h1>Log into MovieDB</h1>
+	
+	<!-- Gives a message if the parameters are invalid -->
+	<div th:if="${param.error}"> 
+            Invalid user name and password.
+	</div>
+	
+	<!-- Notifies that the user has logged out -->
+	<div th:if="${param.logout}">
+            You have been logged out.
+	</div>
+	<div class="col-md-4">
+	
+	<!-- Sets up a form for inputting login information -->
+	<form th:action="@{/login}" method="post">
+		<div><label> User Name : <input type="text" class="form-control" name="username"/> </label></div>
+		<div><label> Password: <input type="password" class="form-control" name="password"/> </label></div>
+		<div><input type="submit" class="btn btn-success" value="Sign In" /> 
+		<a th:href="@{/signup}">Sign-up</a></div>
+	</form>
+	</div>
+</body>
+</html>

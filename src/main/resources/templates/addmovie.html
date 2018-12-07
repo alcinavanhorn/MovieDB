@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <title>MovieDB - Add a Movie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+	<!-- Sets up a navbar -->
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand">MovieDB</a>
+			</div>
+		<ul class="nav navbar-nav">
+			<li><a href="/homepage">Home</a></li>
+			<li><a href="/filter">Filter by genre</a></li>
+			<li class="active"><a href="/add" sec:authorize="hasAuthority('ADMIN')">Add movie</a></li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+      			<li>
+      				<a href="#"><span class="glyphicon glyphicon-user"></span>		[[${#httpServletRequest.remoteUser}]]</a>
+      			</li>
+      			<li><form th:action="@{/logout}" method="post" class="nav navbar-nav navbar-right" style="margin-top: 0.5em; margin-right: 0.5em">
+						<input type="submit" value="Log out" class="btn btn-danger"/>
+					</form>
+				</li>
+    		</ul>
+		</div>
+	</nav>
+	
+	<div class="form-group">
+	<h1>Add a movie to MovieDB</h1> 
+
+		<!-- Form for adding a movie. Asks for poster image URL, title, short synopsis, director, actor, year, and to choose a genre from the menu.  -->
+		<form th:object="${movie}" th:action="@{../save}" action="#" method="post">
+			<label for="poster">Poster URL:</label>
+			<input type="text" class="form-control" style="width: 20%;" id="poster" th:field="*{poster}" />
+
+		  	<label for="title">Title:</label>
+		  	<input type="text" class="form-control" style="width: 20%;" maxlength="255" id="title" th:field="*{title}" />
+
+			<label for="synopsis">Synopsis:</label>
+			<textarea class="form-control" style="width: 20%; resize: none;" placeholder="Max 255 characters" maxlength="255" th:field="*{synopsis}"></textarea>
+
+		  	<label for="director">Director:</label>
+		  	<input class="form-control" type="text" style="width: 20%;" placeholder="Max 255 characters" maxlength="255" id="director" th:field="*{director}" />
+
+			<label for="actor">Starring:</label>
+			<input class="form-control"type="text" style="width: 20%;" placeholder="Max 255 characters" maxlength="255" id="actor" th:field="*{actor}" />
+
+		  	<label for="year">Year:</label>
+		  	<input class="form-control" type="text" style="width: 20%;" id="year" th:field="*{year}" />
+
+			<label for="genrelist">Genre:</label> 	
+			<select id="genrelist" th:field="*{genre}" class="form-control" style="width: 20%;">
+				<option th:each="genre: ${genres}"
+				th:value="${genre.genreId}" 
+				th:text="${genre.genreName}">
+				</option>
+			</select>
+    	<input type="submit" value="Save"></input>
+    	</form>
+	</div>
+</body>
+</html>
+
