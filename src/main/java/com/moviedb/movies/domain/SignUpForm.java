@@ -17,10 +17,6 @@ public class SignUpForm {
     private String passwordCheck = "";
 
     @NotEmpty
-    @Size(min=7, max=30) //Specifies a range for the email
-    private String email = "";
-
-    @NotEmpty
     private String role = "USER"; //Specifies the default role for a user as USER, ADMIN role is hard-coded to a specific user
 	
     //Basic user data getters and setters
@@ -48,13 +44,6 @@ public class SignUpForm {
 		this.passwordCheck = passwordCheck;
 	}
 	
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
 	
 	public String getRole() {
 		return role;

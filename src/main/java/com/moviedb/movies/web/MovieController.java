@@ -48,7 +48,7 @@ public class MovieController {
 	@RequestMapping(value="/homepage")
 	public String movieList(Model model) {
 		model.addAttribute("movies", mrepository.findAll());
-		model.addAttribute("genres", grepository.findAll()); //For adding genre to the dropdown (might get deleted)
+		model.addAttribute("genres", grepository.findAll()); //For adding genre to the dropdown
 		
 		return "homepage";
 	}
