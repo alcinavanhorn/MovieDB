@@ -59,7 +59,7 @@ public class UserController {
     			return "signup";
     		}
     	}
-    	else { //If all is verified and matched, the user is 
+    	else { //If all is verified and matched, the user is signed up for the service
     		return "signup";
     	}
     	return "redirect:/login";    	

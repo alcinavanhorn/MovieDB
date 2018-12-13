@@ -47,16 +47,22 @@ public class ReviewController {
 	
 	//ADMIN functions
 	
-	//RESTful service to get all ratings
+	//RESTful service to get all reviews
 	@RequestMapping(value = "/reviews", method = RequestMethod.GET)
 	public @ResponseBody List<Review> ratingsListRest() {
 		return (List<Review>) rrepository.findAll();
 	}
 	
-	//RESTful service to get rating by id
+	//RESTful service to get review by id
     @RequestMapping(value="/review/{id}", method = RequestMethod.GET)
     public @ResponseBody Optional<Review> findRatingRest(@PathVariable("id") Long reviewId) {	
     	return rrepository.findById(reviewId);
     }  
-	
+    
+	// RESTful service to delete a review
+	@RequestMapping(value = "/review/delete/{id}", method = RequestMethod.GET)
+	public @ResponseBody String reviewDeleteRest(@PathVariable("id") Long reviewId) {
+		rrepository.deleteById(reviewId);
+		return "Review deleted";
+	}
 }

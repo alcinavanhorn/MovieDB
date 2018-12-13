@@ -44,7 +44,6 @@ public class SignUpForm {
 		this.passwordCheck = passwordCheck;
 	}
 	
-	
 	public String getRole() {
 		return role;
 	}
