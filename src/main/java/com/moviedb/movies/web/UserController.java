@@ -6,12 +6,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.moviedb.movies.domain.SignUpForm;
 import com.moviedb.movies.domain.User;
 import com.moviedb.movies.domain.UserRepository;
+
+import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -60,4 +65,22 @@ public class UserController {
     	return "redirect:/login";    	
     }    
     
+	//RESTful services to get all users
+    @RequestMapping(value="/users", method = RequestMethod.GET)
+    public @ResponseBody List<User> userListRest() {
+    	return (List<User>) urepository.findAll();
+    }
+    
+    //RESTful services to get user by id
+	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
+	public @ResponseBody Optional<User> findUserRest(@PathVariable("id") Long userId) {
+		return urepository.findById(userId);
+	}
+
+	// RESTful service to delete a user
+	@RequestMapping(value = "/user/delete/{id}", method = RequestMethod.GET)
+	public @ResponseBody String userDeleteRest(@PathVariable("id") Long userId) {
+		urepository.deleteById(userId);
+		return "User deleted";
+	}
 }

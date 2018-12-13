@@ -10,6 +10,6 @@ public interface ReviewRepository extends CrudRepository <Review, Long> {
 	List<Review> findByMovie(Movie movie); //Finds reviews by movie
 	
 	@Query("SELECT rating FROM Review WHERE movie =:movie") //Query used to find ratings for the chosen movie
-	double[] findRatingByMovie(@Param(value="movie")Movie movie); //Handles the array list of ratings to calculate average
+	double[] findRatingsByMovie(@Param(value="movie")Movie movie); //Handles the array list of ratings to calculate average
 
 }

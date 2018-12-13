@@ -21,8 +21,6 @@ import com.moviedb.movies.domain.Movie;
 import com.moviedb.movies.domain.MovieRepository;
 import com.moviedb.movies.domain.Review;
 import com.moviedb.movies.domain.ReviewRepository;
-import com.moviedb.movies.domain.User;
-import com.moviedb.movies.domain.UserRepository;
 
 @Controller
 public class MovieController {
@@ -34,9 +32,7 @@ public class MovieController {
 	
 	@Autowired
 	private ReviewRepository rrepository;
-	
-	@Autowired
-	private UserRepository urepository;
+
 	
 	//Login
 	@RequestMapping(value="/login")
@@ -96,7 +92,7 @@ public class MovieController {
 
 		model.addAttribute("review", new Review()); //Adds new rating to JQueryForm
 
-		double[] allRatings = rrepository.findRatingByMovie(movie);
+		double[] allRatings = rrepository.findRatingsByMovie(movie);
 		double sum = 0;
 
 		//A loop to calculate the average
@@ -164,16 +160,4 @@ public class MovieController {
     	return grepository.findById(genreId);
     }
     
-	//RESTful services to get all users
-    @RequestMapping(value="/users", method = RequestMethod.GET)
-    public @ResponseBody List<User> userListRest() {
-    	return (List<User>) urepository.findAll();
-    }
-    
-    //RESTful services to get user by id
-	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-	public @ResponseBody Optional<User> findUserRest(@PathVariable("id") Long userId) {
-		return urepository.findById(userId);
-	}
-
 }

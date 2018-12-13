@@ -17,7 +17,7 @@ public class Review {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //Creates automatically generated values for the primary key
 	private Long reviewId;
 	 
-	@Size(min=1, max=250) //Specifies a size for the review text
+	@Size(min=0, max=250) //Specifies a size for the review text
 	private String reviewtext;
 	
 	@NotNull //Makes sure that the value is not null

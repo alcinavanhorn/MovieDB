@@ -124,7 +124,7 @@ public class ReviewRepositoryTest {
 			Review review2 = new Review(3, "It was okay", mrepository.findByTitle("An Extremely Goofy Movie").get(0));
 			rrepository.save(review2);
 			
-			double[] ratings = rrepository.findRatingByMovie(movie);
+			double[] ratings = rrepository.findRatingsByMovie(movie);
 			assertThat(ratings).isNotEmpty();
 			assertThat(ratings).hasSize(2);
 		}
